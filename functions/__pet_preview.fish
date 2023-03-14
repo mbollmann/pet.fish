@@ -5,7 +5,10 @@ function __pet_preview --description "Takes a snippet formatted by `pet search` 
     set_color normal
     echo ""
     # Code (syntax-highlighted for fish)
-    echo $argv | sed 's/.*]: // ; s/#.*//' | fish_indent --ansi
+    echo $argv | \
+        sed 's/.*]: // ; s/#.*//' | # extract code
+        sed 's/<\([^ =]\+\)\([^ ]*\)>/{$\U\1}/g' | # replace pet placeholders with variable names
+        fish_indent --ansi
     # Tags, if present
     if string match -e -q "#" "$argv"
         echo ""
