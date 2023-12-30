@@ -32,7 +32,7 @@ that `fzf` is set as pet's `"selectcmd"` in its configuration file (usually
 Install via [fisher](https://github.com/jorgebucaran/fisher):
 
 ```
-fisher add mbollmann/pet.fish
+fisher install mbollmann/pet.fish
 ```
 
 
