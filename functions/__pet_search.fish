@@ -14,7 +14,7 @@ function __pet_search --description 'Search pet for a query and replace the comm
     set --local --export --append FZF_DEFAULT_OPTS (string escape -- $fzf_arguments)
     set --local --export SHELL (command --search fish)
 
-    pet search --query "$query" $argv | read cmd
+    set cmd (pet search --query "$query" $argv)
 
     if test $status -eq 0 ; and test -n "$cmd"
         commandline --replace -- $cmd
