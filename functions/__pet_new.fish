@@ -1,9 +1,9 @@
 function __pet_new --description 'Saves a command as a snippet in pet'
     # Use the current contents of the command line
-    set -l cmd (commandline)
+    set -l cmd (commandline | string split0)
 
     # If the command line is empty, let's search history
-    if test -z "$cmd"
+    if test -z (commandline)
         # Copying parts of fzf.fish's _fzf_search_history here, since we can't
         # directly re-use it
         if test -z "$fish_private_mode"
