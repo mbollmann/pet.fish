@@ -1,9 +1,9 @@
 function __pet_new --description 'Saves a command as a snippet in pet'
     # Use the current contents of the command line
-    set -l cmd (commandline)
+    set -l cmd (commandline | string split0)
 
     # If the command line is empty, let's search history
-    if test -z "$cmd"
+    if test -z (string join "" -- (commandline -o))
         # Copying parts of fzf.fish's _fzf_search_history here, since we can't
         # directly re-use it
         if test -z "$fish_private_mode"
@@ -16,8 +16,7 @@ function __pet_new --description 'Saves a command as a snippet in pet'
             set --export FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=90% --preview-window=wrap --marker="*"'
         end
         set --local --export SHELL (command --search fish)
-
-        set cmd (builtin history --null --show-time="%m-%d %H:%M:%S │ " | \
+        set cmd (builtin history --null --show-time="%m-%d %H:%M:%S │ " | 
             fzf --read0 \
             --print0 \
             --ansi \
@@ -26,13 +25,14 @@ function __pet_new --description 'Saves a command as a snippet in pet'
             --query=(commandline) \
             --preview="echo -- {4..} | fish_indent --ansi" \
             --preview-window="bottom:3:wrap" \
-            $fzf_history_opts | \
+            $fzf_history_opts |
             # remove timestamps from commands selected
-            string replace --regex '^\d\d-\d\d \d\d:\d\d:\d\d │ ' '')
+            string replace --regex '^\d\d-\d\d \d\d:\d\d:\d\d │ ' '' |
+            string split0)
     end
 
     if test -n "$cmd"
-        echo "* Save a new pet snippet:"
+        echo -e "\n* Save a new pet snippet:"
         pet new --tag -- "$cmd"
     else
         commandline --function repaint
