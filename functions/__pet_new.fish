@@ -32,7 +32,7 @@ function __pet_new --description 'Saves a command as a snippet in pet'
     end
 
     if test -n "$cmd"
-        echo "* Save a new pet snippet:"
+        echo -e "\n* Save a new pet snippet:"
         pet new --tag -- "$cmd"
     else
         commandline --function repaint
